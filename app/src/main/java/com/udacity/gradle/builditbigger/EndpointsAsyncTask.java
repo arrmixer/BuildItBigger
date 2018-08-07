@@ -1,6 +1,7 @@
 package com.udacity.gradle.builditbigger;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.jokes.MyJokes;
@@ -11,14 +12,18 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<Void, Void, List<String>> {
+
+    public static final String TAG = EndpointsAsyncTask.class.getSimpleName();
 
     private static MyApi myApiService = null;
     private MyJokes jokes = new MyJokes();
 
     interface AsyncResponse{
-        void processFinish(String output);
+        void processFinish(List<String> output);
     }
 
     public AsyncResponse delegate = null;
@@ -28,7 +33,8 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... voids) {
+    protected List<String> doInBackground(Void... Void) {
+        List<String> jokesList = new ArrayList<>();
         if (myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -48,16 +54,18 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
         }
 
         try {
-            return myApiService.gotJokes().execute().getData();
+            jokesList = myApiService.gotJokes().execute().getData();
+            return jokesList;
         } catch (IOException ie) {
-            return ie.getMessage();
+
+            Log.d(TAG, ie.getMessage()  );
+            return jokesList;
         }
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(List<String> s) {
         delegate.processFinish(s);
-
 
     }
 }

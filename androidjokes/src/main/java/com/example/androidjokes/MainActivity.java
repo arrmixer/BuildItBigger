@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.example.androidjokes.databinding.ActivityMainAndroidJokesBinding;
 
@@ -20,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
                 DataBindingUtil.setContentView(this, R.layout.activity_main_android_jokes);
 
 //        MyJokes jokes = new MyJokes();
-//
 //      mainAndroidJokesBinding.txtAndroidJokes.setText(jokes.getJoke());
 
         if(getIntent().hasExtra(EXTRA_JOKE)){

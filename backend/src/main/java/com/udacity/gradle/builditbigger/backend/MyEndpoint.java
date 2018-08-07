@@ -29,14 +29,14 @@ public class MyEndpoint {
     }
 
     @ApiMethod(name = "gotJokes")
-    public MyBean gotJokes(){
+    public MyBeanList gotJokes(){
 
         MyJokes jokes = new MyJokes();
 
-        MyBean response = new MyBean();
-        response.setData(jokes.getJoke());
+        MyBeanList myBeanList = new MyBeanList();
+        myBeanList.setData(jokes.getJokes());
 
-        return response;
+        return myBeanList;
 
     }
 

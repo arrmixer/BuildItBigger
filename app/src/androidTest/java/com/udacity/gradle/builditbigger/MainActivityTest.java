@@ -29,6 +29,7 @@ public class MainActivityTest {
         mActivityTestRule.getActivity().getSupportFragmentManager().beginTransaction();
     }
 
+    //make sure the textView is visible and with the correct text shown
     @Test
     public void TestTextVisible(){
         ViewInteraction textView  = onView(withId(R.id.instructions_text_view));
@@ -36,6 +37,7 @@ public class MainActivityTest {
         textView.check(matches(allOf(withText("Press the button for a delicious joke!"))));
     }
 
+    //make sure the button is visible and with the correct text shown
     @Test
     public void ButtonIsVisible(){
         ViewInteraction button = onView(withId(R.id.instructions_button));
@@ -52,7 +54,8 @@ public class MainActivityTest {
 
         ViewInteraction textView = onView(withId(R.id.txt_android_jokes));
         textView.check(matches(isDisplayed()));
-        textView.check(matches(allOf(withText("Give me some of that Chicken!!!"))));
+        textView.check(matches(allOf(withText("What do you call a fish without eyes? Fsh."))));
     }
+
 
 }
