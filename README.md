@@ -1,3 +1,25 @@
+This was my third project for the Android Nano Degree Program. This project had some "starter code" which is why there is the project info on the bottom. I made some minor adjustments to the initial setup compared to the original starter code but nothing major.  Very basic build but covered alot topics. Good times. 
+
+Here are my credits: 
+
+credits for BuildItBigger
+
+Callback for AsyncTask: 
+https://stackoverflow.com/questions/12575068/how-to-get-the-result-of-onpostexecute-to-main-activity-because-asynctask-is-a
+
+espresso testing with fragment:
+https://android.jlelse.eu/the-basics-of-android-espresso-testing-activities-fragments-7a8bfbc16dc5
+
+build versions:
+https://appsgit.com/create-product-flavor-android-gradle-freepaid-version-app/
+
+progress bar:
+http://www.tutorialspoint.com/android/android_loading_spinner.htm
+
+google interstitial ads:
+https://developers.google.com/admob/android/interstitial
+
+
 # Gradle for Android and Java Final Project
 
 In this project, you will create an app with multiple flavors that uses
