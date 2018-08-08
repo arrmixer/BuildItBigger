@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,7 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.androidjokes.MainActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.udacity.gradle.builditbigger.databinding.FragmentMainBinding;
+import com.udacity.gradle.builditbigger.databinding.FragmentMainFreeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends Fragment {
+public class MainFragmentFree extends Fragment {
 
     public static final String TAG = MainFragment.class.getSimpleName();
 
@@ -39,11 +42,12 @@ public class MainFragment extends Fragment {
     private List<String> jokes = new ArrayList<>();
     private int index;
 
+    private InterstitialAd mInterstitialAd;
+    ;
 
+    public MainFragmentFree() {
 
-   public  MainFragment(){
-
-   }
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -57,10 +61,10 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             index = savedInstanceState.getInt(EXTRA_INDEX);
             jokes = savedInstanceState.getStringArrayList(EXTRA_JOKE);
-        }else{
+        } else {
 
             //use callback Interface to get result for AsyncTask
             EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(new EndpointsAsyncTask.AsyncResponse() {
@@ -78,7 +82,8 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentMainBinding mainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+
+        FragmentMainFreeBinding mainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         mainBinding.setLifecycleOwner(this);
 
         mainBinding.instructionsButton.setOnClickListener(new View.OnClickListener() {
@@ -90,21 +95,42 @@ public class MainFragment extends Fragment {
                 i.putExtra(EXTRA_JOKE, jokes.get(index));
                 startActivity(i);
 
-                if(index < jokes.size() - 1){
+                if (index < jokes.size() - 1) {
                     index++;
-                }else{
+                } else {
                     index = 0;
                 }
 
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                } else {
+                    Log.d(TAG, "The interstitial wasn't loaded yet.");
+                }
 
 
             }
         });
 
 
-        return mainBinding.getRoot();
-    }
+        AdView mAdView = mainBinding.adView;
+        // Create an ad request. Check logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
 
+        mInterstitialAd = new InterstitialAd(getContext());
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+
+        return mainBinding.getRoot();
+
+//        return null;
+
+    }
 
 
     /*Menu Configuration*/

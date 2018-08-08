@@ -17,15 +17,15 @@ import android.view.ViewGroup;
 
 import com.example.androidjokes.MainActivity;
 import com.udacity.gradle.builditbigger.databinding.FragmentMainBinding;
+import com.udacity.gradle.builditbigger.databinding.FragmentMainPaidBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends Fragment {
+public class MainFragmentPaid extends Fragment {
 
     public static final String TAG = MainFragment.class.getSimpleName();
 
@@ -40,10 +40,9 @@ public class MainFragment extends Fragment {
     private int index;
 
 
+    public MainFragmentPaid() {
 
-   public  MainFragment(){
-
-   }
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -57,10 +56,10 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             index = savedInstanceState.getInt(EXTRA_INDEX);
             jokes = savedInstanceState.getStringArrayList(EXTRA_JOKE);
-        }else{
+        } else {
 
             //use callback Interface to get result for AsyncTask
             EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(new EndpointsAsyncTask.AsyncResponse() {
@@ -78,7 +77,8 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentMainBinding mainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+
+        FragmentMainPaidBinding mainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         mainBinding.setLifecycleOwner(this);
 
         mainBinding.instructionsButton.setOnClickListener(new View.OnClickListener() {
@@ -90,19 +90,17 @@ public class MainFragment extends Fragment {
                 i.putExtra(EXTRA_JOKE, jokes.get(index));
                 startActivity(i);
 
-                if(index < jokes.size() - 1){
+                if (index < jokes.size() - 1) {
                     index++;
-                }else{
+                } else {
                     index = 0;
                 }
-
-
 
             }
         });
 
-
         return mainBinding.getRoot();
+
     }
 
 

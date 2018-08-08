@@ -22,7 +22,7 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, List<String>> {
     private static MyApi myApiService = null;
     private MyJokes jokes = new MyJokes();
 
-    interface AsyncResponse{
+    public interface AsyncResponse{
         void processFinish(List<String> output);
     }
 
