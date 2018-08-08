@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,17 +13,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import com.example.androidjokes.MainActivity;
-import com.udacity.gradle.builditbigger.databinding.FragmentMainBinding;
 import com.udacity.gradle.builditbigger.databinding.FragmentMainPaidBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragmentPaid extends Fragment {
+public class MainFragment extends Fragment {
 
     public static final String TAG = MainFragment.class.getSimpleName();
 
@@ -37,12 +36,12 @@ public class MainFragmentPaid extends Fragment {
 
     //placeholders
     private List<String> jokes = new ArrayList<>();
+    private String joke;
     private int index;
 
+   public MainFragment(){
 
-    public MainFragmentPaid() {
-
-    }
+   }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -56,20 +55,20 @@ public class MainFragmentPaid extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        if (savedInstanceState != null) {
+        if(savedInstanceState != null){
             index = savedInstanceState.getInt(EXTRA_INDEX);
             jokes = savedInstanceState.getStringArrayList(EXTRA_JOKE);
-        } else {
+        }else{
 
             //use callback Interface to get result for AsyncTask
-            EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(new EndpointsAsyncTask.AsyncResponse() {
+            EndpointsAsyncTaskJokes endpointsAsyncTask = new EndpointsAsyncTaskJokes(new EndpointsAsyncTaskJokes.AsyncResponse() {
                 @Override
                 public void processFinish(List<String> output) {
                     jokes = output;
                 }
             });
 
-            endpointsAsyncTask.execute();
+                    endpointsAsyncTask.execute();
         }
 
     }
@@ -78,24 +77,20 @@ public class MainFragmentPaid extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        FragmentMainPaidBinding mainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+        FragmentMainPaidBinding mainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_paid, container, false);
         mainBinding.setLifecycleOwner(this);
 
         mainBinding.instructionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                MyJokes myJokes = new MyJokes();
-//                Toast.makeText(getContext(), myJokes.getJoke(), Toast.LENGTH_SHORT).show();
+
+                //get jokes randomly
+                int index = (int) Math.floor(Math.random() * jokes.size());
+                joke = jokes.get(index);
+
                 Intent i = new Intent(getContext(), MainActivity.class);
                 i.putExtra(EXTRA_JOKE, jokes.get(index));
                 startActivity(i);
-
-                if (index < jokes.size() - 1) {
-                    index++;
-                } else {
-                    index = 0;
-                }
-
             }
         });
 

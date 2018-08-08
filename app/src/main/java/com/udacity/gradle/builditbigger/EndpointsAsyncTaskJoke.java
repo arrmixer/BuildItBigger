@@ -2,7 +2,6 @@ package com.udacity.gradle.builditbigger;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.example.jokes.MyJokes;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -15,25 +14,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EndpointsAsyncTask extends AsyncTask<Void, Void, List<String>> {
+public class EndpointsAsyncTaskJoke extends AsyncTask<Void, Void, String> {
 
-    public static final String TAG = EndpointsAsyncTask.class.getSimpleName();
+    public static final String TAG = EndpointsAsyncTaskJoke.class.getSimpleName();
 
     private static MyApi myApiService = null;
     private MyJokes jokes = new MyJokes();
 
-    public interface AsyncResponse{
-        void processFinish(List<String> output);
+    public interface AsyncResponse {
+        void processFinish(String output);
     }
 
     public AsyncResponse delegate = null;
 
-    public EndpointsAsyncTask(AsyncResponse delegate) {
+    public EndpointsAsyncTaskJoke(AsyncResponse delegate) {
         this.delegate = delegate;
     }
 
     @Override
-    protected List<String> doInBackground(Void... Void) {
+    protected String doInBackground(Void... voids) {
         List<String> jokesList = new ArrayList<>();
         if (myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
@@ -54,17 +53,16 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, List<String>> {
         }
 
         try {
-            jokesList = myApiService.gotJokes().execute().getData();
-            return jokesList;
+            return myApiService.gotJoke().execute().getData();
         } catch (IOException ie) {
 
-            Log.d(TAG, ie.getMessage()  );
-            return jokesList;
+            Log.d(TAG, ie.getMessage());
+            return ie.getMessage();
         }
     }
 
     @Override
-    protected void onPostExecute(List<String> s) {
+    protected void onPostExecute(String s) {
         delegate.processFinish(s);
 
     }

@@ -19,7 +19,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.udacity.gradle.builditbigger.databinding.FragmentMainBinding;
-import com.udacity.gradle.builditbigger.databinding.FragmentMainFreeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragmentFree extends Fragment {
+public class MainFragment extends Fragment {
 
     public static final String TAG = MainFragment.class.getSimpleName();
 
@@ -39,13 +38,14 @@ public class MainFragmentFree extends Fragment {
     public static final String EXTRA_INDEX = "com.udacity.gradle.builditbigger.extra.index";
 
     //placeholders
-    private List<String> jokes = new ArrayList<>();
+    private String joke;
+    private List<String> jokes;
     private int index;
 
     private InterstitialAd mInterstitialAd;
-    ;
 
-    public MainFragmentFree() {
+
+    public MainFragment() {
 
     }
 
@@ -67,23 +67,23 @@ public class MainFragmentFree extends Fragment {
         } else {
 
             //use callback Interface to get result for AsyncTask
-            EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(new EndpointsAsyncTask.AsyncResponse() {
-                @Override
-                public void processFinish(List<String> output) {
-                    jokes = output;
-                }
-            });
+         EndpointsAsyncTaskJokes endpointsAsyncTaskJokes = new EndpointsAsyncTaskJokes(new EndpointsAsyncTaskJokes.AsyncResponse() {
+             @Override
+             public void processFinish(List<String> output) {
+                 jokes = output;
+             }
+         });
 
-            endpointsAsyncTask.execute();
+
+            endpointsAsyncTaskJokes.execute();
+
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        FragmentMainFreeBinding mainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+        FragmentMainBinding mainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         mainBinding.setLifecycleOwner(this);
 
         mainBinding.instructionsButton.setOnClickListener(new View.OnClickListener() {
@@ -91,15 +91,15 @@ public class MainFragmentFree extends Fragment {
             public void onClick(View v) {
 //                MyJokes myJokes = new MyJokes();
 //                Toast.makeText(getContext(), myJokes.getJoke(), Toast.LENGTH_SHORT).show();
+
+                //get jokes randomly
+                int index = (int) Math.floor(Math.random() * jokes.size());
+                joke = jokes.get(index);
+
                 Intent i = new Intent(getContext(), MainActivity.class);
-                i.putExtra(EXTRA_JOKE, jokes.get(index));
+                i.putExtra(EXTRA_JOKE, joke);
                 startActivity(i);
 
-                if (index < jokes.size() - 1) {
-                    index++;
-                } else {
-                    index = 0;
-                }
 
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
@@ -110,7 +110,6 @@ public class MainFragmentFree extends Fragment {
 
             }
         });
-
 
         AdView mAdView = mainBinding.adView;
         // Create an ad request. Check logcat output for the hashed device ID to
@@ -127,10 +126,8 @@ public class MainFragmentFree extends Fragment {
 
 
         return mainBinding.getRoot();
-
-//        return null;
-
     }
+
 
 
     /*Menu Configuration*/

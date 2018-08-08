@@ -20,6 +20,17 @@
  "id": "myApi:v1",
  "kind": "discovery#restDescription",
  "methods": {
+  "gotJoke": {
+   "httpMethod": "POST",
+   "id": "myApi.gotJoke",
+   "path": "gotJoke",
+   "response": {
+    "$ref": "MyBean"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "gotJokes": {
    "httpMethod": "POST",
    "id": "myApi.gotJokes",

@@ -14,11 +14,20 @@ public class MyJokes {
         jokes.add("Why shouldn’t you write with a broken pencil? Because it’s pointless. ");
         jokes.add("What’s the difference between the bird flu and the swine flu? One requires tweetment and the other an oinkment.");
         jokes.add("When do computers overheat? When they need to vent.");
+
+
     }
 
     public List<String> getJokes(){
 
         return jokes;
+    }
+
+    public String getJoke(){
+
+        int index = (int) Math.floor(Math.random() * jokes.size());
+
+        return jokes.get(index);
     }
     //What do you call a fish without eyes? Fsh.
     //Give me some of that Chicken!!!
