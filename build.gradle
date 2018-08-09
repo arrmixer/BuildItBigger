@@ -14,6 +14,48 @@ buildscript {
     }
 }
 
+/* tasks dependency: runAllTests -> startServer -> run unit tests
+ * -> run connected tests -> stop server */
+
+task runAllTests{
+    description 'Start server run all tests then stop server'
+    dependsOn "startServer"
+    dependsOn "runJokesUnitTests"
+    dependsOn "runEspressoTests"
+    dependsOn "stopServer"
+}
+
+task startServer{
+         dependsOn = [":backend:appengineStart"]
+    doLast{
+        println "startServer"
+    }
+}
+
+task stopServer{
+    dependsOn = [":backend:appengineStop"]
+    mustRunAfter 'runEspressoTests'
+    doLast{
+        println "stopServer"
+    }
+}
+
+task runEspressoTests{
+    dependsOn = [":app:connectedAndroidTest"]
+    mustRunAfter 'runJokesUnitTests'
+    doLast{
+        println "runEspressoTests"
+    }
+}
+
+task runJokesUnitTests{
+    dependsOn = [":jokes:test"]
+    mustRunAfter 'startServer'
+    doLast{
+        println "runJokesUnitTests"
+    }
+}
+
 allprojects {
     repositories {
         jcenter()
