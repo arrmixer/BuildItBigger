@@ -10,15 +10,15 @@ https://stackoverflow.com/questions/12575068/how-to-get-the-result-of-onpostexec
 espresso testing with fragment:
 https://android.jlelse.eu/the-basics-of-android-espresso-testing-activities-fragments-7a8bfbc16dc5
 
-build versions:
-https://appsgit.com/create-product-flavor-android-gradle-freepaid-version-app/
-
 progress bar:
 http://www.tutorialspoint.com/android/android_loading_spinner.htm
 
 google interstitial ads:
 https://developers.google.com/admob/android/interstitial
 
+and of course material from the Gradle module in the Advance Android section at Udacity class:
+
+https://github.com/udacity/ud867
 
 # Gradle for Android and Java Final Project
 
